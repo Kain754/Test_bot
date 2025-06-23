@@ -27,8 +27,8 @@ jobs:
       env:
         TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        ADMINISTRATOR_IDS: ${{ secrets.ADMINISTRATOR_IDS }}  # Add this line
       with:
         timeout_minutes: 355  # Меньше 6 часов
         max_attempts: 3
         command: python bot.py
-
