@@ -9,19 +9,19 @@ jobs:
   run-bot:
     runs-on: ubuntu-latest
     timeout-minutes: 360  # Максимум 6 часов
-    
+
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-    
+
     - name: Install dependencies
       run: |
-        pip install python-telegram-bot psycopg2-binary
-        
+        pip install -r requirements.txt
+
     - name: Run with auto-restart
       uses: nick-fields/retry@v2
       env:
@@ -30,4 +30,5 @@ jobs:
       with:
         timeout_minutes: 355  # Меньше 6 часов
         max_attempts: 3
-        command: python Test_bot/bot.py
+        command: python bot.py
+
