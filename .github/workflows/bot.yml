@@ -2,12 +2,13 @@ name: Telegram Bot Runner
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
+    timeout-minutes: 360  # Максимум 6 часов
     
     steps:
     - uses: actions/checkout@v3
@@ -19,13 +20,14 @@ jobs:
     
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install python-telegram-bot psycopg2-binary
         
-    - name: Run Telegram Bot
+    - name: Run with auto-restart
+      uses: nick-fields/retry@v2
       env:
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        ADMINISTRATOR_IDS: ${{ secrets.ADMINISTRATOR_IDS }}
-      run: |
-        python bot.py
+      with:
+        timeout_minutes: 355  # Меньше 6 часов
+        max_attempts: 3
+        command: python bot.py
