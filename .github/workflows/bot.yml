@@ -30,4 +30,4 @@ jobs:
       with:
         timeout_minutes: 355  # Меньше 6 часов
         max_attempts: 3
-        command: python bot.py
+        command: python Test_bot/bot.py
